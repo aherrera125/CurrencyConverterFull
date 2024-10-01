@@ -1,8 +1,8 @@
 import './App.css';
 import { useRef, useState, useEffect } from "react";
 
-function App() {
-  var data;
+function App() {  
+  const dataRef = useRef(null);
 
   const currecyRef = useRef();
   const resultRef = useRef();
@@ -16,7 +16,8 @@ function App() {
       const callApiChange = async () => {
         try {
           const response = await fetch("https://v6.exchangerate-api.com/v6/b91aeff2a690c886be6a2960/latest/EUR");
-          data = await response.json();          
+          const jsonData = await response.json;
+          dataRef.current = jsonData;
         } catch (error) {
           console.log("Error toaccess to API", error);
         }
@@ -26,7 +27,8 @@ function App() {
   );
 
   const calculate = () => {
-    setValueChange(data.conversion_rates[currencyType]);
+
+    setValueChange(dataRef.current.conversion_rates[currencyType]);
 
     const currencyValue = parseFloat(currecyRef.current.value);
     const currencyChanged = currencyValue * valueChange;
