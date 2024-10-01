@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+h1{
+  text-align: center;
+}
+
+.centerElement{
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.result{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+body{
+  background-image: url("./assets/sky.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
