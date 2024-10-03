@@ -4,20 +4,21 @@ import { useRef, useState, useEffect } from "react";
 function App() {  
   const dataRef = useRef(null);
 
-  const currecyRef = useRef();
+  const currencyRef = useRef();
   const resultRef = useRef();
-  const currecyTypeRef = useRef();
+  const currencyTypeRef = useRef();
 
   const [valueChange, setValueChange] = useState(null);
   const [currencyType, setCurrencyType] = useState(null);
+  const [typeOfChanges, setTypeOfChanges] = useState(null)
 
   useEffect(
     () => {
       const callApiChange = async () => {
         try {
           const response = await fetch("https://v6.exchangerate-api.com/v6/b91aeff2a690c886be6a2960/latest/EUR");
-          const jsonData = await response.json;
-          dataRef.current = jsonData;
+          const jsonData = await response.json();
+          setTypeOfChanges(jsonData);
         } catch (error) {
           console.log("Error toaccess to API", error);
         }
@@ -27,24 +28,25 @@ function App() {
   );
 
   const calculate = () => {
+      if (typeOfChanges.conversion_rates) {
+          setValueChange(typeOfChanges.conversion_rates[currencyType]);
+      }
 
-    setValueChange(dataRef.current.conversion_rates[currencyType]);
-
-    const currencyValue = parseFloat(currecyRef.current.value);
+    const currencyValue = parseFloat(currencyRef.current.value);
     const currencyChanged = currencyValue * valueChange;
 
     resultRef.current.innerHTML = currencyChanged.toFixed(2);
   }
 
   const selectCurrencyType = ()=>{
-    setCurrencyType(currecyTypeRef.current.value);
+    setCurrencyType(currencyTypeRef.current.value);
   }
 
   return (
     <div>
       <h1>Currency Converter</h1>
-      <input className='centerElement' type='text' ref={currecyRef}></input><br></br>
-      <select className='centerElement'  onChange={selectCurrencyType} ref={currecyTypeRef}>
+      <input className='centerElement' type='text' ref={currencyRef}></input><br></br>
+      <select className='centerElement'  onChange={selectCurrencyType} ref={currencyTypeRef}>
         <option value="">Select</option>
         <option value="EUR">EUR</option>
         <option value="USD">USD</option>
