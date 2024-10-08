@@ -1,5 +1,6 @@
 import './App.css';
 import { useRef, useState, useEffect } from "react";
+import './scss/styles.scss';
 
 function App() {  
   const dataRef = useRef(null);
